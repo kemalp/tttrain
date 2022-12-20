@@ -58,7 +58,7 @@ const Game: React.FC = () => {
             <div className="game__info">
                 <div>{getStatus()}</div>
             </div>
-            <button onClick={() => setSquares(Array(9).fill(null))}>Reset game</button>
+            <button onClick={resetGame}>Reset game</button>
         </div>
     );
 };
