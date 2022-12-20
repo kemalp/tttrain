@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Board from './Board';
 
+import './Game.scss';
+
 const Game: React.FC = () => {
     const [xIsNext, setXIsNext] = useState(true);
     const [squares, setSquares] = useState(Array(9).fill(null));
@@ -46,11 +48,12 @@ const Game: React.FC = () => {
     }
 
     return (
-        <div className="game">
-            <div className="game-board">
+        <div className="game__wrapper">
+            <h1>Tic Tac Toe for RAIN</h1>
+            <div className="game__board">
                 <Board squares={squares} onClick={handleClick} />
             </div>
-            <div className="game-info">
+            <div className="game__info">
                 <div>{status}</div>
             </div>
             <button onClick={() => setSquares(Array(9).fill(null))}>Reset game</button>
