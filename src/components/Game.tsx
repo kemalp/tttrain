@@ -6,18 +6,19 @@ import './Game.scss';
 const Game: React.FC = () => {
     const [xIsNext, setXIsNext] = useState(true);
     const [squares, setSquares] = useState(Array(9).fill(null));
+    const [winner, setWinner] = useState('');
 
     const handleClick = (i: number) => {
-        const newSquares = squares.slice();
-        if (calculateWinner(squares) || newSquares[i]) {
+        if (winner || squares[i]) {
             return;
         }
+        const newSquares = squares.slice();
         newSquares[i] = xIsNext ? 'X' : 'O';
         setSquares(newSquares);
         setXIsNext(!xIsNext);
     };
 
-    const calculateWinner = (squares: string[]) => {
+    const getStatus = () => {
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -31,21 +32,22 @@ const Game: React.FC = () => {
         for (const line of lines) {
             const [a, b, c] = line;
             if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return squares[a];
+                return `Winner: ${squares[a]}`;
             }
         }
-        return null;
+        if (squares.every(Boolean)) {
+            return "It's a draw";
+        }
+        return `Next player: ${xIsNext ? 'X' : 'O'}`;
     };
 
 
+    const resetGame = () => {
+        setSquares(Array(9).fill(''));
+        setXIsNext(true);
+        setWinner('');
+    };
 
-    const winner = calculateWinner(squares);
-    let status;
-    if (winner) {
-        status = `Winner: ${winner}`;
-    } else {
-        status = `Next player: ${xIsNext ? 'X' : 'O'}`;
-    }
 
     return (
         <div className="game__wrapper">
@@ -54,7 +56,7 @@ const Game: React.FC = () => {
                 <Board squares={squares} onClick={handleClick} />
             </div>
             <div className="game__info">
-                <div>{status}</div>
+                <div>{getStatus()}</div>
             </div>
             <button onClick={() => setSquares(Array(9).fill(null))}>Reset game</button>
         </div>
